@@ -30,9 +30,8 @@ class Proxy:
 
 from lxml import etree
 import requests
-from  selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from settings import CHROME_PATH
+
+
 
 def steal_proxies_old():
     ## 这个网站对页面元素做了混淆处理，除了插入不可见元素外，还对端口号加了密
@@ -55,11 +54,7 @@ def steal_proxies_old():
 
 def steal_proxies():
     proxy_list = []
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-
-    browser = webdriver.Chrome(executable_path=CHROME_PATH, chrome_options=chrome_options)
+    from service.driver import browser
 
     url = 'http://www.goubanjia.com/'
     browser.get(url)
