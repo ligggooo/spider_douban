@@ -8,11 +8,12 @@
 @Desc    :   准备代理ip池
 '''
 import random
+from lxml import etree
 
 
 class Proxy:
     def __init__(self):
-        self.proxy_pool =[]
+        self.proxy_pool = []
 
     def pick_one(self):
         if self.is_empty:
@@ -28,20 +29,16 @@ class Proxy:
     def is_empty(self):
         return len(self.proxy_pool) == 0
 
-from lxml import etree
-import requests
-
-
 
 def steal_proxies_old():
-    ## 这个网站对页面元素做了混淆处理，除了插入不可见元素外，还对端口号加了密
+    # 这个网站对页面元素做了混淆处理，除了插入不可见元素外，还对端口号加了密,使用旧方法爬取ip和端口号较难实现
 
     # url = 'http://www.goubanjia.com/'
     # headers = {
     #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36',
     # }
     # data_html = requests.get(url=url,headers=headers).text
-    with open('data.html','r',encoding='utf-8') as f:
+    with open('data.html', 'r', encoding='utf-8') as f:
         # f.write(data_html)
         data_html = f.read()
     tree = etree.HTML(data_html)
@@ -52,13 +49,13 @@ def steal_proxies_old():
         ip_port = ''.join(ele.xpath('./td[1]//*[not(contains(@style,"none"))]//text()'))
         print(ip_port)
 
+
 def steal_proxies():
     proxy_list = []
     from service.driver import browser
 
     url = 'http://www.goubanjia.com/'
     browser.get(url)
-    # js = 'document.getElementBy(“test”).scrollIntoView();'
 
     browser.maximize_window()
     js = 'window.scrollTo(0,1300)'
@@ -72,6 +69,7 @@ def steal_proxies():
         proxy_list.append(ip_port)
     return proxy_list
 
+
 proxy_pool = Proxy()
 
 # 测试
@@ -82,6 +80,3 @@ if __name__ == '__main__':
     print(proxy.pick_one())
     print(proxy.pick_one())
     # steal_proxies()
-
-
-

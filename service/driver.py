@@ -5,7 +5,7 @@
 @Software:   PyCharm
 @File    :   driver.py
 @Time    :   2019/2/12 20:14
-@Desc    :
+@Desc    :   生成浏览器对象
 '''
 from  selenium import webdriver
 from selenium.webdriver.chrome.options import Options
